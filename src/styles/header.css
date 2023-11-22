@@ -1,0 +1,11 @@
+header .active {
+  background: #000;
+}
+
+header a {
+  transition: all 0.3s linear;
+}
+
+header a:hover {
+  background: #000;
+}
