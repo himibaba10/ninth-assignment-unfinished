@@ -1,9 +1,10 @@
 import { Button, Card } from "keep-react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import serviceBg from "../../assets/service-bg.png";
 
 const Service = ({ service = {} }) => {
-  const { title, image, description } = service;
+  const { id, title, image, description, price } = service;
 
   return (
     <Card className="overflow-hidden rounded-md" imgSrc={image} imgSize="md">
@@ -21,14 +22,19 @@ const Service = ({ service = {} }) => {
             {description}
           </Card.Description>
         </Card.Container>
-        <Card.Container className="flex items-center justify-center gap-5 mt-auto">
-          <Button
-            className="px-10 font-poppins hover:bg-[#FF4444] hover:text-white"
-            size="md"
-            type="outlineGray"
-          >
-            View Details
-          </Button>
+        <Card.Container className="flex flex-col items-center justify-center gap-5 mt-auto">
+          <Card.Description className="mt-2 mb-6 font-poppins text-black !text-3xl font-semibold">
+            {price} USD
+          </Card.Description>
+          <Link to={`/service/${id}`}>
+            <Button
+              className="px-10 font-poppins hover:bg-[#FF4444] hover:text-white"
+              size="md"
+              type="outlineGray"
+            >
+              View Details
+            </Button>
+          </Link>
         </Card.Container>
       </Card.Container>
     </Card>

@@ -2,9 +2,13 @@ import { Button, Navbar } from "keep-react";
 import logo from "../../assets/logo.png";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../../styles/header.css";
+import { useContext } from "react";
+import { AuthContext } from "../../providers/AuthProvider";
+import userImg from "../../assets/user-img.png";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { user, setUser, logOut } = useContext(AuthContext);
 
   const navLinks = (
     <>
@@ -18,6 +22,15 @@ const Header = () => {
   );
 
   const handleHeaderBtn = () => navigate("/login");
+  const handleLogoutBtn = () => {
+    logOut()
+      .then(() => {
+        setUser(null)
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
+  };
 
   return (
     <header className="py-3 bg-[#FF4444]">
@@ -30,7 +43,7 @@ const Header = () => {
             <Navbar.Divider></Navbar.Divider>
             <Navbar.Container
               tag="ul"
-              className="lg:flex hidden items-center justify-center gap-2 flex-1"
+              className="lg:flex hidden items-center justify-end gap-2 flex-1 mr-10"
             >
               {navLinks}
             </Navbar.Container>
@@ -41,14 +54,21 @@ const Header = () => {
             </Navbar.Collapse>
           </Navbar.Container>
 
-          <Navbar.Container className="flex gap-2">
+          <Navbar.Container className="flex items-center gap-2">
+            {
+              user &&
+              <div className="flex items-center gap-2">
+                <img className={`w-7 rounded-full ${!user.photoURL && "invert"}`} src={user.photoURL || userImg} alt="" />
+                <span>{user.displayName}</span>
+              </div>
+            }
             <Button
-              onClick={handleHeaderBtn}
+              onClick={user ? handleLogoutBtn : handleHeaderBtn}
               className="bg-[rgb(10,13,18)] px-7"
               size="sm"
               type="primary"
             >
-              Login
+              {user ? "Logout" : "Login"}
             </Button>
             <Navbar.Toggle />
           </Navbar.Container>
